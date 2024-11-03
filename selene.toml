@@ -1,0 +1,5 @@
+exclude = ["computer/*"]
+
+[lints]
+undefined_variable = "allow"
+incorrect_standard_library_use = "allow"
