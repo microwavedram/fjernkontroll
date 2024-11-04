@@ -1,6 +1,6 @@
 local REPO = "https://raw.githubusercontent.com/microwavedram/fjernkontroll"
 local VER = "v0.0.1"
-local LANG = "en_us"
+local LANG = "no-NO"
 
 local CHANNEL = 12742
 
@@ -76,6 +76,8 @@ local held = {}
 local k_events = {}
 local debounce = {}
 
+local send_cache = {}
+
 local controllers = {}
 
 local vertical = lerper.new(0, 0.05)
@@ -132,6 +134,17 @@ local function key_down(key, h)
     if keys.getName(key) == "q" then
         if gearExists(gear - 1) then
             toGear(gear - 1)
+        end
+    end
+    if keys.getName(key) == "i" or keys.getName(key) == "o"  then
+        if keys.getName(key) == "i" then
+            frame.setCursorPos(1, 13)
+            frame.write("i")
+            send_cache["suspension_forward"] = 360
+        elseif keys.getName(key) == "o" then
+            frame.setCursorPos(1, 13)
+            frame.write("o")
+            send_cache["suspension_forward"] = -360
         end
     end
 
@@ -216,19 +229,25 @@ local function noblock_loop()
 
     for controllerid, controller in pairs(controllers) do
         if #controller > 0 then
-            local packet = {}
+            local speeds, rotations = {}, {}
             for _,motor in pairs(controller) do
                 if motor == "left_track" then
-                    packet[motor] = l_track_throttle
+                    speeds[motor] = l_track_throttle
                 elseif motor == "right_track" then
-                    packet[motor] = r_track_throttle
+                    speeds[motor] = r_track_throttle
+                elseif motor == "suspension_forward" then
+                    if send_cache[motor] then
+                        rotations[motor] = send_cache[motor]
+                        send_cache[motor] = nil
+                    end
                 end 
             end
 
             modem.transmit(CHANNEL, CHANNEL, textutils.serialiseJSON({
                 id = "SET",
                 controller = controllerid,
-                speeds = packet
+                speeds = speeds,
+                rotations = rotations
             }))
         end
     end
@@ -248,6 +267,8 @@ local function noblock_loop()
     frame.write(string.format("%s %.0frpm", lang["fjernkontroll.right_track"], r_track_throttle))
     frame.setCursorPos(1, 9)
     frame.write(string.format("%s %s", lang["fjernkontroll.gear"], lang["fjernkontroll.gear."..gear]))
+    frame.setCursorPos(1, 11)
+    frame.write(textutils.serialiseJSON(send_cache))
 end
 
 local function main()

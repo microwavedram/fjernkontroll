@@ -4,6 +4,7 @@ local CHANNEL = 12742
 local BINDING = {
     left_track = "Create_RotationSpeedController_0",
     right_track = "Create_RotationSpeedController_1",
+    suspension_forward = "Create_SequencedGearshift_0"
 }
 
 local MODIFIER = {
@@ -14,9 +15,9 @@ local MODIFIER = {
 local modem = assert(peripheral.find("modem"), "no modem")
 modem.open(CHANNEL)
 
-local speed_controllers = {}
+local bound_devices = {}
 for _,port in pairs(BINDING) do
-    speed_controllers[port] = peripheral.wrap(port)
+    bound_devices[port] = peripheral.wrap(port)
 end
 
 local function keys(t)
@@ -33,7 +34,7 @@ while true do
     if event == "modem_message" then
         if channel == CHANNEL then
             local success, parsed = pcall(textutils.unserialiseJSON, message)
-    
+
             if success then
                 if parsed.id == "FIND" then
                     print("Advertisement recieved")
@@ -45,16 +46,35 @@ while true do
                 elseif parsed.id == "SET" then
                     if parsed.controller == os.getComputerID() then
                         for motor, speed in pairs(parsed.speeds) do
-                            local speed_controller = speed_controllers[BINDING[motor]]
+                            local speed_controller = bound_devices[BINDING[motor]]
     
                             if speed_controller then
-                                speed_controller.setTargetSpeed(speed * MODIFIER[motor])
+                                speed_controller.setTargetSpeed(speed * (MODIFIER[motor] or 1))
                             else
                                 print("Unknown speed controller: "..tostring(motor))
                             end
                         end
+                        for gearshift_id, instruction in pairs(parsed.rotations) do
+                            local gearshift = bound_devices[BINDING[gearshift_id]]
+    
+                            if gearshift then
+                                local d = instruction * (MODIFIER[gearshift] or 1)
+
+                                if d > 0 then
+                                    gearshift.rotate(math.abs(d), 1)
+                                else
+                                    gearshift.rotate(math.abs(d), -1)
+                                end
+                            else
+                                print("Unknown sequenced gearshift: "..tostring(gearshift))
+                            end
+                        end
                     end
+                else
+                    print("unkown packet id ".. parsed.id)
                 end
+            else
+                print("Parse Failed")
             end
         end
     end

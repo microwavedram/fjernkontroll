@@ -1,5 +1,6 @@
 {
-  "computer": 3,
-  "peripheral.Create_RotationSpeedController": 1,
-  "peripheral.computer": 0
+  "computer": 8,
+  "peripheral.Create_RotationSpeedController": 3,
+  "peripheral.computer": 2,
+  "peripheral.Create_SequencedGearshift": 1
 }
