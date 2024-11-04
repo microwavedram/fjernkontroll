@@ -1,3 +1,5 @@
 {
-  "computer": 0
+  "computer": 3,
+  "peripheral.Create_RotationSpeedController": 1,
+  "peripheral.computer": 0
 }

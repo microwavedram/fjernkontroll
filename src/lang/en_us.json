@@ -1,3 +1,15 @@
 {
-    "fjernkontroll.name": "fjernkontroll"
+    "fjernkontroll.name": "fjernkontroll",
+    "fjernkontroll.vertical": "Vertical Axis",
+    "fjernkontroll.horizontal": "Horizontal Axis",
+    "fjernkontroll.left_track": "Left Track",
+    "fjernkontroll.right_track": "Right Track",
+    "fjernkontroll.gear": "Gear",
+    "fjernkontroll.gear.1": "Neutral",
+    "fjernkontroll.gear.2": "First",
+    "fjernkontroll.gear.3": "Seccond",
+    "fjernkontroll.gear.4": "Third",
+    "fjernkontroll.gear.5": "Fourth",
+    "fjernkontroll.gear.6": "Fifth",
+    "fjernkontroll.gear.7": "SHIT FUCK"
 }
