@@ -1,6 +1,9 @@
 {
-  "computer": 8,
-  "peripheral.Create_RotationSpeedController": 3,
-  "peripheral.computer": 2,
-  "peripheral.Create_SequencedGearshift": 1
+  "computer": 24,
+  "peripheral.Create_RotationSpeedController": 31,
+  "peripheral.computer": 14,
+  "peripheral.Create_SequencedGearshift": 7,
+  "peripheral.createdieselgenerators:huge_diesel_engine_block_entity": 13,
+  "peripheral.speaker": 0,
+  "peripheral.create:creative_fluid_tank": 1
 }
