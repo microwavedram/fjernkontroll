@@ -1,4 +1,4 @@
--- meshnet v1.0.0
+-- meshnet v1.0.1
 
 --#region libraries
 
@@ -3246,6 +3246,12 @@ return setmetatable({
 		end,
 		HUGE_ENGINE = function(id)
 			return string.format("createdieselgenerators:huge_diesel_engine_block_entity_%s", id)
+		end,
+		COMPUTER = function(id)
+			return string.format("computer_%s", id)
+		end,
+		BARREL = function(id)
+			return string.format("minecraft:barrel_%s", id)
 		end,
 	},
 	REDSTONE = function()
