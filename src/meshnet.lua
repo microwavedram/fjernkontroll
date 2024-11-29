@@ -1,4 +1,4 @@
--- meshnet v1.0.1
+-- meshnet v1.0.2
 
 --#region libraries
 
@@ -3048,6 +3048,10 @@ function meshnet:wrap(id)
 		return peripheral.wrap(self.local_map[id])
 	elseif self.allocations[id] then
 		local allocation = self.allocations[id]
+
+		if allocation == nil then
+			return nil
+		end
 
 		return setmetatable({}, {
 			__index = function(_, key)
