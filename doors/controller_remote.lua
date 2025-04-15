@@ -116,6 +116,19 @@ end, function ()
             elseif event[2] == keys.backspace then
                 input = input:sub(1, #input - 1)
             end
+        elseif event[1] == "monitor_touch" then
+            if event[2] == peripheral.getName(monitor) then
+                if event[3] >= 1 and event[3] <= 14 then
+                    local i = 2
+                    for _, v in pairs(mapping) do
+                        if i == event[4] and not lockdown then
+                            setOpen(v, not isOpen(v))
+                            break
+                        end
+                        i = i + 1
+                    end
+                end
+            end
         end
     end
 end, function ()
