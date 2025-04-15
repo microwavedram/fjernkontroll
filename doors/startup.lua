@@ -1,0 +1,1 @@
+shell.run("monitor " .. peripheral.getName(peripheral.find("monitor")) .. " controller")
